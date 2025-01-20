@@ -38,4 +38,21 @@ export class UserRepository {
       where: { id },  // Recherche par id
     });
   }
+
+  async deleteById(id: number): Promise<void> {
+    try {
+      const user = await this.userDB.findOne({ where: { id } });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      // Supprimer l'utilisateur
+      await this.userDB.delete(id);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      throw new Error("Could not delete user");
+    }
+  }
 }
+

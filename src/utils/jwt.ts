@@ -5,7 +5,7 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || 'refresh-secret
 
 export const generateAccessToken = (user: any) => {
   return jwt.sign({ id: user._id, email: user.email }, ACCESS_TOKEN_SECRET, {
-    expiresIn: '1m',
+    expiresIn: '10m',
   });
 };
 
@@ -23,4 +23,14 @@ export const verifyAccessToken = (token: string) => {
 
 export const verifyRefreshToken = (token: string) => {
   return jwt.verify(token, REFRESH_TOKEN_SECRET);
+};
+
+export const generateAccessTokenId = (user: { _id: number; email: string }) => {
+  return jwt.sign(
+    { id: user._id, email: user.email }, // Inclut l'ID et l'email dans le payload
+    ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: '10m', // Durée de validité de l'access token
+    }
+  );
 };

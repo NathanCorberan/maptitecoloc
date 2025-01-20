@@ -4,7 +4,7 @@ import { UserCredentialEntity } from "../databases/mysql/userCredential.entity";
 import { UserToCreateDTO } from "../types/user/dtos";
 import bcrypt from "bcrypt";
 import { userToCreateInput } from "../types/user/Inputs"; // Ajouter l'import
-import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
+import { generateAccessToken, generateRefreshToken, generateAccessTokenId } from "../utils/jwt";
 
 export class UserService {
   private userRepository = new UserRepository();
@@ -59,7 +59,7 @@ export class UserService {
     }
 
     // Générer les tokens JWT
-    const accessToken = generateAccessToken(user);
+    const accessToken = generateAccessTokenId({ _id: user.id, email: user.email });
     const refreshToken = generateRefreshToken(user);
 
     return { user, accessToken, refreshToken };
@@ -77,6 +77,15 @@ export class UserService {
     } catch (error) {
       console.error("Error retrieving user by ID:", error);
       throw new Error("Error retrieving user");
+    }
+  }
+
+  async deleteUserById(id: number): Promise<void> {
+    try {
+      await this.userRepository.deleteById(id);
+    } catch (error) {
+      console.error("Error in service while deleting user:", error);
+      throw new Error("Error deleting user");
     }
   }
 }

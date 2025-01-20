@@ -9,7 +9,7 @@ export class UserCredentialEntity {
   @Column({ type: 'varchar', length: 255 })
   password_hash: string;
 
-  @OneToOne(() => UserEntity, (user) => user.userCredential) // Relier UserEntity à UserCredentialEntity
+  @OneToOne(() => UserEntity, (user) => user.userCredential, { onDelete: 'CASCADE' }) // Relier UserEntity à UserCredentialEntity
   @JoinColumn() // La relation sera gérée par la clé étrangère dans UserEntity
   user: UserEntity;
 }

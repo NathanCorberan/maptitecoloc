@@ -4,7 +4,7 @@ import { UserToCreateDTO } from "../types/user/dtos";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { UserPresenter } from "../types/user/presenters";
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken, verifyAccessToken } from "../utils/jwt";
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken, verifyAccessToken, generateAccessTokenId } from "../utils/jwt";
 import { JwtPayload } from "jsonwebtoken";
 
 
@@ -81,7 +81,8 @@ export const refreshUserToken = async (req: Request, res: Response): Promise<voi
     }
 
     // Générer un nouveau access token
-    const newAccessToken = generateAccessToken({ id, email });
+    //const newAccessToken = generateAccessToken({ id, email });
+    const newAccessToken = generateAccessTokenId({ _id: id, email: email });
     const newRefreshToken = generateRefreshToken({ id, email });
 
     res.status(200).json({
@@ -131,12 +132,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Récupérer les informations privées de l'utilisateur
-    const userInfo = {
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      age: user.age,
-    };
+    const userInfo = plainToInstance(UserPresenter, user, { excludeExtraneousValues: true});
 
     res.status(200).json({
       message: "User info fetched successfully",
@@ -145,5 +141,47 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
   } catch (error: unknown) {
     const err = error as Error;
     res.status(500).json({ message: "Internal Server Error", error: err.message });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Récupérer le token depuis l'en-tête Authorization
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(400).json({ message: "Authorization header is required and must be Bearer token" });
+      return;
+    }
+
+    // Extraire le token
+    const accessToken = authHeader.split(" ")[1];
+
+    // Vérifier et décoder le token
+    const decoded = verifyAccessToken(accessToken);
+    if (!decoded || typeof decoded !== "object") {
+      res.status(401).json({ message: "Invalid or expired access token" });
+      return;
+    }
+
+    // Extraire l'ID de l'utilisateur depuis le token
+    const { id } = decoded as JwtPayload;
+    if (!id) {
+      res.status(400).json({ message: "Invalid token payload, ID is missing" });
+      return;
+    }
+
+    // Appeler la méthode du service pour supprimer l'utilisateur
+    await userService.deleteUserById(id);
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error: unknown) {
+    const err = error as Error;
+
+    if (err.message === "User not found") {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      res.status(500).json({ message: "Internal Server Error", error: err.message });
+    }
   }
 };
