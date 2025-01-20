@@ -1,6 +1,7 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { IsString, IsInt, Min } from "class-validator";
 import { UserEntity } from "../../databases/mysql/user.entity";
+import { UserCredentialEntity } from "../../databases/mysql/userCredential.entity";
 
 export class userToCreateInput {
   @Expose()
@@ -16,8 +17,8 @@ export class userToCreateInput {
   email: string;
 
   @Expose()
-  @IsString()
-  password: string; // Garder ici pour l'input, mais on va l'associer à userCredential dans le service
+  @Type(() => UserCredentialEntity)
+  credential: UserCredentialEntity; 
 
   @Expose()
   @IsInt()

@@ -1,12 +1,11 @@
 import { Expose } from "class-transformer";
 import { IsString, IsEmail, MinLength, IsInt, Min } from "class-validator";
-import { UserEntity } from "../../databases/mysql/user.entity";
 
 export class UserToCreateDTO {
   @Expose()
   @IsString()
   @MinLength(1)
-  firstname: UserEntity['firstname'];
+  firstname: string;
 
   @Expose()
   @IsString()
