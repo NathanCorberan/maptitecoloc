@@ -4,6 +4,7 @@ import { UserCredentialEntity } from "../databases/mysql/userCredential.entity";
 import { UserToCreateDTO } from "../types/user/dtos";
 import bcrypt from "bcrypt";
 import { userToCreateInput } from "../types/user/Inputs"; // Ajouter l'import
+import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
 
 export class UserService {
   private userRepository = new UserRepository();
@@ -42,5 +43,25 @@ export class UserService {
     const savedUser = await this.userRepository.save(createdUser);
 
     return savedUser;
+  }
+
+  async loginUser(email: string, password: string): Promise<{ user: UserEntity, accessToken: string, refreshToken: string }> {
+    // Chercher l'utilisateur par son email
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Vérifier le mot de passe
+    const isPasswordValid = await bcrypt.compare(password, user.userCredential.password_hash);
+    if (!isPasswordValid) {
+      throw new Error("Invalid credentials");
+    }
+
+    // Générer les tokens JWT
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    return { user, accessToken, refreshToken };
   }
 }

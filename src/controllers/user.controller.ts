@@ -4,6 +4,12 @@ import { UserToCreateDTO } from "../types/user/dtos";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { UserPresenter } from "../types/user/presenters";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken,
+  verifyAccessToken,
+} from '../utils/jwt';
 
 const userService = new UserService();
 
@@ -28,5 +34,22 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   catch (error) {
     console.error(error);
     res.status(500).json({ error: "An internal error occurred" });
+  }
+};
+
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email, password } = req.body;
+
+    const { user, accessToken, refreshToken } = await userService.loginUser(email, password);
+
+    res.status(200).json({
+      message: "Login successful",
+      accessToken,
+      refreshToken,
+    });
+  } catch (error: unknown) {
+    const err = error as Error;
+    res.status(500).json({ message: 'Internal Server Error', error: err.message });
   }
 };
