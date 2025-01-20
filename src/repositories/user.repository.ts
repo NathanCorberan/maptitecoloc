@@ -12,7 +12,13 @@ export class UserRepository {
   }
 
   create(user: userToCreateInput): UserEntity {
-    const newUser = this.userDB.create(user);
+    const newUser = new UserEntity();
+      newUser.firstname = user.firstname;
+      newUser.lastname = user.lastname;
+      newUser.email = user.email;
+      newUser.age = user.age;
+      newUser.createdAt = new Date();
+      newUser.userCredential = user.credential;
     return newUser;
   }
 

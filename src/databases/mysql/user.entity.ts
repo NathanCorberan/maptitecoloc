@@ -21,7 +21,7 @@ export class UserEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @OneToOne(() => UserCredentialEntity, (userCredential) => userCredential.user)
+  @OneToOne(() => UserCredentialEntity, (userCredential) => userCredential.user, { cascade: true })
   userCredential: UserCredentialEntity;
 }
 

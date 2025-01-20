@@ -36,7 +36,7 @@ export class UserService {
     };
 
     // Créer l'utilisateur (UserEntity)
-    const createdUser = await this.userRepository.create(userInput);
+    const createdUser = this.userRepository.create(userInput);
 
     // Sauvegarder l'utilisateur et son mot de passe
     const savedUser = await this.userRepository.save(createdUser);

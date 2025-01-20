@@ -22,6 +22,6 @@ export class userToCreateInput {
 
   @Expose()
   @IsInt()
-  @Min(18) // Validation de l'âge
+  @Min(18)
   age: number;
 }

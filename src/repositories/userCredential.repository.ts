@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { UserCredentialEntity } from "../databases/mysql/userCredential.entity";
 import { connectMySQLDB } from "../configs/databases/mysql.config";
 import { UserToCreateDTO } from "../types/user/dtos";
-import { userToCreateInput } from "../types/user/Inputs";
+import { userCredentialToCreateInput } from "../types/userCredential/Inputs";
 
 export class UserCredentialRepository {
   private userCredentialDB: Repository<UserCredentialEntity>;
@@ -12,8 +12,9 @@ export class UserCredentialRepository {
   }
 
   // Créer un nouvel objet UserCredential à partir des données passées
-  create(userCredentialData: userToCreateInput): UserCredentialEntity {
-    const newUserCredential = this.userCredentialDB.create(userCredentialData);
+  create(userCredentialData: userCredentialToCreateInput): UserCredentialEntity {
+    const newUserCredential = new UserCredentialEntity();
+    newUserCredential.password_hash = userCredentialData.password;
     return newUserCredential;
   }
 
