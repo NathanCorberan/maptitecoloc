@@ -64,4 +64,19 @@ export class UserService {
 
     return { user, accessToken, refreshToken };
   }
+
+  async findById(id: number): Promise<UserEntity | null> {
+    try {
+      const user = await this.userRepository.findById(id);
+  
+      if (!user) {
+        return null;
+      }
+  
+      return user;  // Retourne toutes les informations de l'utilisateur, y compris la photo de profil
+    } catch (error) {
+      console.error("Error retrieving user by ID:", error);
+      throw new Error("Error retrieving user");
+    }
+  }
 }

@@ -9,10 +9,12 @@ export const generateAccessToken = (user: any) => {
   });
 };
 
-export const generateRefreshToken = (user: any) => {
-  return jwt.sign({ id: user._id, email: user.email }, REFRESH_TOKEN_SECRET, {
-    expiresIn: '7d',
-  });
+export const generateRefreshToken = (user: { id: number; email: string }) => {
+  return jwt.sign(
+    { id: user.id, email: user.email }, // Ajoutez 'id' et 'email' au payload
+    REFRESH_TOKEN_SECRET,
+    { expiresIn: '7d' }
+  );
 };
 
 export const verifyAccessToken = (token: string) => {

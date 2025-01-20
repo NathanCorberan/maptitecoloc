@@ -29,7 +29,13 @@ export class UserRepository {
   async findByEmail(email: string): Promise<UserEntity | null> {
     return this.userDB.findOne({
       where: { email },
-      relations: ["userCredential"], // Charge explicitement la relation
+      relations: ["userCredential"],
+    });
+  }
+
+  async findById(id: number): Promise<UserEntity | null> {
+    return this.userDB.findOne({
+      where: { id },  // Recherche par id
     });
   }
 }
