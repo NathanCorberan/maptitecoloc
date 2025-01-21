@@ -5,7 +5,7 @@ import { ChargeEntity } from "./charge.entity";
 import { PaiementEntity } from "./paiements.entity";
 import { MembreColocationEntity } from "./membre.colocation.entity";
 import { PartageChargeEntity } from "./partage.charge.entity";
-import { HistoriqueEntity } from "./hitorique.entity";
+import { HistoriqueEntity } from "./historique.entity";
 import { TacheMenagereEntity } from "./tache.menager.entity";
 
 @Entity('users')

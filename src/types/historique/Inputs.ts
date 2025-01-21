@@ -11,10 +11,6 @@ export class HistoriqueToCreateInput {
   @Expose()
   @IsInt({ message: "L'ID de l'utilisateur doit être un nombre entier." })
   @Min(1, { message: "L'ID de l'utilisateur n'existe pas." })
-  utilisateur: UserEntity['id'];
+  utilisateur: UserEntity;
 
-  @Expose()
-  @IsInt({ message: "L'ID de la colocation doit être un nombre entier." })
-  @Min(1, { message: "L'ID de la colocation n'existe pas." })
-  colocation: ColocationEntity['id'];
 }

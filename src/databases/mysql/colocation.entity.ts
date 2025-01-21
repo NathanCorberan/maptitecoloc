@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "ty
 import { UserEntity } from "./user.entity";
 import { ChargeEntity } from "./charge.entity";
 import { MembreColocationEntity } from "./membre.colocation.entity";
-import { HistoriqueEntity } from "./hitorique.entity";
+import { HistoriqueEntity } from "./historique.entity";
 import { TacheMenagereEntity } from "./tache.menager.entity";
 
 @Entity('colocations')
@@ -36,9 +36,6 @@ export class ColocationEntity {
 
   @OneToMany(() => MembreColocationEntity, (membre) => membre.colocation)
   membres: MembreColocationEntity[];
-
-  @OneToMany(() => HistoriqueEntity, (historique) => historique.colocation)
-  historique: HistoriqueEntity[];
   
   @OneToMany(() => TacheMenagereEntity, (tache) => tache.colocation)
   tachesMenageres: TacheMenagereEntity[];
