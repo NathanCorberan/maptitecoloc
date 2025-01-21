@@ -72,5 +72,15 @@ export class ColocationRepository {
     // Sauvegarder la colocation mise à jour
     return this.colocationBD.save(colocation);
   }
-}
 
+  async ChangedLocataire(colocationId: number, newUserId: UserEntity): Promise<ColocationEntity> {
+    const colocation = await this.colocationBD.findOne({ where: { id: colocationId } });
+    if (!colocation) {
+        throw new Error("Colocation not found");
+    }
+
+    colocation.proprietaire = newUserId;
+
+    return this.colocationBD.save(colocation);
+  }
+}

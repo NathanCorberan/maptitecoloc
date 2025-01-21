@@ -46,7 +46,6 @@ export class ColocationService {
   async findInfoAllColocations(colocationId: number): Promise<ColocationEntity | null> {
     return this.colocationRepository.findInfoAllColocations(colocationId);
   }
-
   async IsActive(userId: number, colocationId: number, active: boolean): Promise<ColocationEntity | null> {
     // Vérifie si la colocation existe
     const existingColocation = await this.colocationRepository.findOne(colocationId);
@@ -67,5 +66,23 @@ export class ColocationService {
     }
 
     return updatedColocation;
-}
+  }
+
+  async ChangeLocataire(userId: number, colocationId: number, newUserId: number): Promise<ColocationEntity | null> {
+    const existingColocation = await this.colocationRepository.findOne(colocationId);
+    if (!existingColocation) {
+      throw new Error("Colocation not found");
+    }
+
+    if (existingColocation.proprietaire.id !== userId) {
+      throw new Error("User is not authorized to update this colocation");
+    }
+
+    const existingNewUser = await this.userRepository.findById(newUserId);
+    if (!existingNewUser) {
+      throw new Error("New user not found");
+    }
+
+    return await this.colocationRepository.ChangedLocataire(existingColocation.id, existingNewUser);
+  }
 }
