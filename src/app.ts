@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import userRoutes from "./routes/user/user.routes";
 import colocationRoutes from "./routes/colocation/colocation.routes";
+import chargeRoutes from "./routes/charges/charges.routes";
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes); // Routes pour les utilisateurs
 
 app.use("/api/colocations", colocationRoutes); // Routes pour les colocations
+
+app.use("/api/charges", chargeRoutes); // Routes pour les charges
 
 // Middleware de gestion des erreurs (à vous de le personnaliser pour qu'il soit réutilisable, pensez aux classes d'erreurs)
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
