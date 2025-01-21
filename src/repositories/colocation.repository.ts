@@ -19,9 +19,8 @@ export class ColocationRepository {
       newColocation.nombreChambres = colocation.nombreChambres;
       newColocation.agenceOuProprietaire = colocation.agenceOuProprietaire;
       newColocation.estActive = colocation.estActive;
-
-    // Associez le propriétaire en utilisant uniquement l'ID
       newColocation.proprietaire = colocation.proprietaire;
+
     return newColocation;
   }
 
@@ -60,8 +59,7 @@ export class ColocationRepository {
     });
   }
 
-  async ChangedActive(colocationId: number): Promise<ColocationEntity | null> {
-    // Trouver la colocation par ID
+  async ChangedActive(colocationId: number, active: boolean): Promise<ColocationEntity | null> {
     const colocation = await this.colocationBD.findOne({ where: { id: colocationId } });
 
     if (!colocation) {
@@ -69,7 +67,7 @@ export class ColocationRepository {
     }
 
     // Inverser l'état 'estActive' de la colocation
-    colocation.estActive = !colocation.estActive;
+    colocation.estActive = active;
 
     // Sauvegarder la colocation mise à jour
     return this.colocationBD.save(colocation);
