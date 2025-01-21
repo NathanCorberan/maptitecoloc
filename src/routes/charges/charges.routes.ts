@@ -4,8 +4,7 @@ import * as chargesController from "../../controllers/charges.controller";
 
 const routes = Router();
 
-// Route pour l'inscription d'un utilisateur
-//routes.post("/charge", chargesController.createCharge);
+routes.post("/createCharges", chargesController.createCharge);
 
 
 export default routes;
