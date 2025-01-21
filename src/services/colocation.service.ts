@@ -2,7 +2,7 @@ import { ColocationEntity } from "../databases/mysql/colocation.entity";
 import { ColocationRepository } from "../repositories/colocation.repository";
 import { ColocationToCreateDTO } from "../types/colocation/dtos";
 import { colocationToCreateInput } from "../types/colocation/Inputs"; // Ajouter l'import
-import { ColocationPresenter } from "../types/colocation/presenters";
+import { ColocationBigPresenter } from "../types/colocation/presenter.big"; // Ajouter l'import
 
 export class ColocationService {
   private colocationRepository = new ColocationRepository();
@@ -19,9 +19,7 @@ export class ColocationService {
     return this.colocationRepository.findAllColocations(userId);
   }
 
-  /*async findInfoAllColocations(userColocationId: number): Promise<ColocationPresenter[]> {
-    const colocations = await this.colocationRepository.findInfoAllColocations(userColocationId);
-
-    return colocations;
-  }*/
+  async findInfoAllColocations(colocationId: number): Promise<ColocationEntity | null> {
+    return this.colocationRepository.findInfoAllColocations(colocationId);
+  }
 }

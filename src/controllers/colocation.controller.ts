@@ -4,6 +4,7 @@ import { ColocationToCreateDTO } from "../types/colocation/dtos";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { ColocationPresenter } from "../types/colocation/presenters";
+import { ColocationBigPresenter } from "../types/colocation/presenter.big";
 
 const colocationService = new ColocationService();
 
@@ -45,3 +46,20 @@ export const getAllColocationsByUser = async (req: Request, res: Response): Prom
       res.status(500).json({ message: "Internal Server Error", error: err.message });
     }
   };
+
+export const getInfoAllColocationsByUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const colocationId = parseInt(req.params.colocationId);
+    if (isNaN(colocationId)) {
+      res.status(400).json({ message: "Invalid colocation ID" });
+      return;
+    }
+    const colocation = await colocationService.findInfoAllColocations(colocationId);
+    const colocationResponse = plainToInstance(ColocationBigPresenter, colocation, { excludeExtraneousValues: true });
+
+    res.status(200).json(colocationResponse);
+  } catch (error: unknown) {
+    const err = error as Error;
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
+  }
+};

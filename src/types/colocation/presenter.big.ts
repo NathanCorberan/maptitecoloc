@@ -3,9 +3,12 @@ import { UserEntity } from "../../databases/mysql/user.entity";
 import { UserPresenter } from "../user/presenters";
 import { ValidateNested } from "class-validator";
 import { ChargePresenter } from "../charge/presenters";
+import { MembreColocationPresenter } from "../membre/presenters";
+import { HistoriquePresenter } from "../historique/presenters";
+import { TacheMenagerePresenter } from "../tachesMenageres/presenters";
 
 
-export class ColocationPresenter {
+export class ColocationBigPresenter {
   @Expose()
   id: number;
 
@@ -38,5 +41,17 @@ export class ColocationPresenter {
   charges: ChargePresenter;
 
   @Expose()
-  @Type(() => )
+  @Type(() => MembreColocationPresenter)
+  @ValidateNested({ each: true })
+  membres: MembreColocationPresenter;
+
+  @Expose()
+  @Type(() => HistoriquePresenter)
+  @ValidateNested({ each: true })
+  historique: HistoriquePresenter;
+
+  @Expose()
+  @Type(() => TacheMenagerePresenter)
+  @ValidateNested({ each: true })
+  tachesMenageres: TacheMenagerePresenter;
 }

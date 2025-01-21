@@ -49,10 +49,14 @@ export class ColocationRepository {
       where: { id: colocationId },
       relations: [
         'proprietaire',
-        'charges',           // Inclure les charges
-        'membres',           // Inclure les membres
-        'historique',        // Inclure l'historique
-        'tachesMenageres'    // Inclure les tâches ménagères
+        'charges',
+        'charges.payePar',
+        'membres',
+        'membres.utilisateur',
+        'historique',
+        'historique.utilisateur',
+        'tachesMenageres',
+        'tachesMenageres.assignee'
       ],
     });
   }
