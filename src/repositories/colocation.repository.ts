@@ -30,6 +30,13 @@ export class ColocationRepository {
     return this.colocationBD.save(colocation);
   }
 
+  async findOne(id: number): Promise<ColocationEntity | null> {
+    return this.colocationBD.findOne({
+      where: { id },
+      relations: ['proprietaire'],
+    });
+  }
+
   /*
   async save(user: UserEntity): Promise<UserEntity> {
     return this.userDB.save(user);

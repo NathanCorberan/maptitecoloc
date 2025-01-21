@@ -13,7 +13,6 @@ export class UserPresenter {
   @Expose()
   email: string;
 
-  // Ne pas exposer le mot de passe
   @Expose()
   createdAt: Date;
 }

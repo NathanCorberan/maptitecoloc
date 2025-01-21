@@ -27,27 +27,3 @@ export const createColocation = async (req: Request, res: Response): Promise<voi
         res.status(500).json({ message: "Internal Server Error", error: err.message });
     }
 }
-/*
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userToCreateDTO = plainToInstance(UserToCreateDTO, req.body, { excludeExtraneousValues: true });
-
-    // Valider les données
-    const dtoErrors = await validate(userToCreateDTO);
-    if (dtoErrors.length > 0) {
-      const errorMessages = dtoErrors.map((error) => error.constraints);
-      res.status(400).json({ errors: errorMessages });
-      return;
-    }
-
-    // Si validation passe, créer l'utilisateur
-    const user = await userService.registerUser(req.body);
-
-    const createdUser = plainToInstance(UserPresenter, user, { excludeExtraneousValues: true });
-    res.status(201).json(createdUser);
-  } 
-  catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An internal error occurred" });
-  }
-};*/

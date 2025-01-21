@@ -1,5 +1,8 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { UserEntity } from "../../databases/mysql/user.entity";
+import { UserPresenter } from "../user/presenters";
+import { ValidateNested } from "class-validator";
+
 
 export class ColocationPresenter {
   @Expose()
@@ -21,8 +24,10 @@ export class ColocationPresenter {
   estActive: boolean;
 
   @Expose()
-  createdAt: Date; // Si la colonne createdAt est ajoutée à l'entité ColocationEntity
-  
+  createdAt: Date; 
+
   @Expose()
-  proprietaire: UserEntity;
+  @Type(() => UserPresenter)
+  @ValidateNested({ each: true })
+  proprietaire: UserPresenter;
 }

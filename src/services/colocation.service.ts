@@ -9,6 +9,8 @@ export class ColocationService {
   async createColocation(colocationToCreate: ColocationToCreateDTO): Promise<ColocationEntity> {
     const newColocation = this.colocationRepository.create(colocationToCreate);
     const savedColocation = await this.colocationRepository.save(newColocation);
-    return savedColocation;
+    const colocationWithProprietaire = await this.colocationRepository.findOne(savedColocation.id);
+
+    return colocationWithProprietaire!;
   }
 }
