@@ -14,16 +14,16 @@ export class ColocationRepository {
 
   create(colocation: ColocationToCreateDTO): ColocationEntity {
     const newColocation = new ColocationEntity();
-    newColocation.lieu = colocation.lieu;
-    newColocation.surface = colocation.surface;
-    newColocation.nombreChambres = colocation.nombreChambres;
-    newColocation.agenceOuProprietaire = colocation.agenceOuProprietaire;
-    newColocation.estActive = colocation.estActive;
+      newColocation.lieu = colocation.lieu;
+      newColocation.surface = colocation.surface;
+      newColocation.nombreChambres = colocation.nombreChambres;
+      newColocation.agenceOuProprietaire = colocation.agenceOuProprietaire;
+      newColocation.estActive = colocation.estActive;
 
     // Associez le propriétaire en utilisant uniquement l'ID
     const proprietaire = new UserEntity();
-    proprietaire.id = colocation.proprietaire;
-    newColocation.proprietaire = proprietaire;    return newColocation;
+      proprietaire.id = colocation.proprietaire;
+      newColocation.proprietaire = proprietaire;    return newColocation;
   }
 
   async save(colocation: ColocationEntity): Promise<ColocationEntity> {
@@ -37,38 +37,39 @@ export class ColocationRepository {
     });
   }
 
-  /*
-  async save(user: UserEntity): Promise<UserEntity> {
-    return this.userDB.save(user);
-  }
-
-  async findByEmail(email: string): Promise<UserEntity | null> {
-    return this.userDB.findOne({
-      where: { email },
-      relations: ["userCredential"],
+  async findAllColocations(userId: number): Promise<ColocationEntity[]> {
+    return this.colocationBD.find({
+      where: { proprietaire: { id: userId } },
+      relations: ['proprietaire'],
     });
   }
 
-  async findById(id: number): Promise<UserEntity | null> {
-    return this.userDB.findOne({
-      where: { id },  // Recherche par id
+  async findInfoAllColocations(colocationId: number): Promise<ColocationEntity | null> {
+    return this.colocationBD.findOne({
+      where: { id: colocationId },
+      relations: [
+        'proprietaire',
+        'charges',           // Inclure les charges
+        'membres',           // Inclure les membres
+        'historique',        // Inclure l'historique
+        'tachesMenageres'    // Inclure les tâches ménagères
+      ],
     });
   }
 
-  async deleteById(id: number): Promise<void> {
-    try {
-      const user = await this.userDB.findOne({ where: { id } });
+  async ChangedActive(colocationId: number): Promise<ColocationEntity | null> {
+    // Trouver la colocation par ID
+    const colocation = await this.colocationBD.findOne({ where: { id: colocationId } });
 
-      if (!user) {
-        throw new Error("User not found");
-      }
-
-      // Supprimer l'utilisateur
-      await this.userDB.delete(id);
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      throw new Error("Could not delete user");
+    if (!colocation) {
+      throw new Error("Colocation not found");
     }
-  }*/
+
+    // Inverser l'état 'estActive' de la colocation
+    colocation.estActive = !colocation.estActive;
+
+    // Sauvegarder la colocation mise à jour
+    return this.colocationBD.save(colocation);
+  }
 }
 

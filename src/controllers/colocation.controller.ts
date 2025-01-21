@@ -27,3 +27,21 @@ export const createColocation = async (req: Request, res: Response): Promise<voi
         res.status(500).json({ message: "Internal Server Error", error: err.message });
     }
 }
+
+
+export const getAllColocationsByUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userId = parseInt(req.params.userId);
+      if (isNaN(userId)) {
+        res.status(400).json({ message: "Invalid user ID" });
+        return;
+      }
+      const colocations = await colocationService.findAllColocations(userId);
+      const colocationsResponse = plainToInstance(ColocationPresenter, colocations, { excludeExtraneousValues: true });
+  
+      res.status(200).json(colocationsResponse);
+    } catch (error: unknown) {
+      const err = error as Error;
+      res.status(500).json({ message: "Internal Server Error", error: err.message });
+    }
+  };
