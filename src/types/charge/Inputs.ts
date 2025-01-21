@@ -15,10 +15,10 @@ export class ChargeToCreateInput {
   @Expose()
   @IsInt({ message: "L'ID de la colocation doit être un nombre entier." })
   @Min(1, { message: "L'ID de la colocation n'existe pas." })
-  colocation: ColocationEntity['id'];
+  colocationId: ColocationEntity['id'];
 
   @Expose()
   @IsInt({ message: "L'ID du payeur doit être un nombre entier." })
   @Min(1, { message: "L'ID du payeur n'existe pas." })
-  payePar: UserEntity['id'];
+  payeParId: UserEntity['id'];
 }

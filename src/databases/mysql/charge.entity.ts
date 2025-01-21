@@ -21,7 +21,7 @@ export class ChargeEntity {
   colocation: ColocationEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.charges)
-  payePar: UserEntity;
+  payePar: UserEntity | null;
 
   @OneToMany(() => PartageChargeEntity, (partage) => partage.charge)
   partages: PartageChargeEntity[];

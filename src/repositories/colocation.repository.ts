@@ -12,7 +12,7 @@ export class ColocationRepository {
     this.colocationBD = connectMySQLDB.getRepository(ColocationEntity);
   }
 
-  create(colocation: ColocationToCreateDTO): ColocationEntity {
+  create(colocation: colocationToCreateInput): ColocationEntity {
     const newColocation = new ColocationEntity();
       newColocation.lieu = colocation.lieu;
       newColocation.surface = colocation.surface;
@@ -23,7 +23,8 @@ export class ColocationRepository {
     // Associez le propriétaire en utilisant uniquement l'ID
     const proprietaire = new UserEntity();
       proprietaire.id = colocation.proprietaire;
-      newColocation.proprietaire = proprietaire;    return newColocation;
+      newColocation.proprietaire = proprietaire;   
+    return newColocation;
   }
 
   async save(colocation: ColocationEntity): Promise<ColocationEntity> {
