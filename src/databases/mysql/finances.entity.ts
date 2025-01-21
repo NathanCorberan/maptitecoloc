@@ -1,12 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity('finances')
-export class financesEntity {
+export class FinancesEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  Charge: string;
+  charge: string;
 
   @Column()
   prix: number;
@@ -21,4 +21,4 @@ export class financesEntity {
   createdAt: Date;
 }
 
-export default financesEntity;
+export default FinancesEntity;
