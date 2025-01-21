@@ -18,10 +18,8 @@ export class ChargesRepository {
     const newCharge = new ChargeEntity();
     newCharge.description = charge.description;
     newCharge.montant = charge.montant;
-      const colocation = new ColocationEntity();
-      colocation.id = charge.colocationId;
-    newCharge.colocation = colocation;
-    newCharge.payePar = null;
+    newCharge.colocation = charge.colocation;
+    newCharge.payePar = charge.payePar;
 
     return newCharge;
   }
