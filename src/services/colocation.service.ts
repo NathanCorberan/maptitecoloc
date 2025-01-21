@@ -28,8 +28,6 @@ export class ColocationService {
       proprietaire: existingUser,
     };
 
-
-
     const newColocation = this.colocationRepository.create(colocationInput);
     const savedColocation = await this.colocationRepository.save(newColocation);
     //const colocationWithProprietaire = await this.colocationRepository.findOne(savedColocation.id);
@@ -38,10 +36,53 @@ export class ColocationService {
   }
 
   async findAllColocations(userId: number): Promise<ColocationEntity[]> {
-    return this.colocationRepository.findAllColocations(userId);
+    const existingUser = await this.userRepository.findById(userId);
+    if (!existingUser) {
+      throw new Error("User not found");
+    }
+    return this.colocationRepository.findAllColocations(userId) ;
   }
 
   async findInfoAllColocations(colocationId: number): Promise<ColocationEntity | null> {
     return this.colocationRepository.findInfoAllColocations(colocationId);
+  }
+  async IsActive(userId: number, colocationId: number, active: boolean): Promise<ColocationEntity | null> {
+    // Vérifie si la colocation existe
+    const existingColocation = await this.colocationRepository.findOne(colocationId);
+    if (!existingColocation) {
+        throw new Error("Colocation not found");
+    }
+
+    // Vérifie si l'utilisateur est le propriétaire de la colocation
+    if (existingColocation.proprietaire.id !== userId) {
+        throw new Error("User is not authorized to update this colocation");
+    }
+
+    // Met à jour l'état actif de la colocation
+    const updatedColocation = await this.colocationRepository.ChangedActive(existingColocation.id, active);
+
+    if (!updatedColocation) {
+        throw new Error("Colocation not found or could not update its active state");
+    }
+
+    return updatedColocation;
+  }
+
+  async ChangeLocataire(userId: number, colocationId: number, newUserId: number): Promise<ColocationEntity | null> {
+    const existingColocation = await this.colocationRepository.findOne(colocationId);
+    if (!existingColocation) {
+      throw new Error("Colocation not found");
+    }
+
+    if (existingColocation.proprietaire.id !== userId) {
+      throw new Error("User is not authorized to update this colocation");
+    }
+
+    const existingNewUser = await this.userRepository.findById(newUserId);
+    if (!existingNewUser) {
+      throw new Error("New user not found");
+    }
+
+    return await this.colocationRepository.ChangedLocataire(existingColocation.id, existingNewUser);
   }
 }
