@@ -2,6 +2,7 @@ import { Expose, Type } from "class-transformer";
 import { UserEntity } from "../../databases/mysql/user.entity";
 import { UserPresenter } from "../user/presenters";
 import { ValidateNested } from "class-validator";
+import { ChargePresenter } from "../charge/presenters";
 
 
 export class ColocationPresenter {
@@ -30,4 +31,12 @@ export class ColocationPresenter {
   @Type(() => UserPresenter)
   @ValidateNested({ each: true })
   proprietaire: UserPresenter;
+
+  @Expose()
+  @Type(() => ChargePresenter)
+  @ValidateNested({ each: true })
+  charges: ChargePresenter;
+
+  @Expose()
+  @Type(() => )
 }
