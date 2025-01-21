@@ -10,9 +10,5 @@ export class HistoriqueToCreateDTO {
 
   @Expose()
   @IsInt({ message: "L'ID de l'utilisateur doit être un nombre entier." })
-  utilisateur: number;
-
-  @Expose()
-  @IsInt({ message: "L'ID de la colocation doit être un nombre entier." })
-  colocation: number;
+  utilisateur: number | null;
 }
