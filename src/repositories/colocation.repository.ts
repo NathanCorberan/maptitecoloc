@@ -21,9 +21,7 @@ export class ColocationRepository {
       newColocation.estActive = colocation.estActive;
 
     // Associez le propriétaire en utilisant uniquement l'ID
-    const proprietaire = new UserEntity();
-      proprietaire.id = colocation.proprietaire;
-      newColocation.proprietaire = proprietaire;   
+      newColocation.proprietaire = colocation.proprietaire;
     return newColocation;
   }
 

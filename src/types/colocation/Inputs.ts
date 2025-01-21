@@ -28,5 +28,6 @@ export class colocationToCreateInput {
 
   @Expose()
   @Type(() => UserEntity)
-  proprietaire: UserEntity['id'];
+  //proprietaire: UserEntity['id'];
+  proprietaire: UserEntity;
 }
