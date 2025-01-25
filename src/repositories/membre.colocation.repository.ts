@@ -20,64 +20,21 @@ export class MembreColocationRepository {
 
         return newMembreColocation;
     }
-/*
-  // Ajouter un membre à une colocation
-  async ajouterMembre(colocationId: number, userId: number): Promise<MembreColocationEntity> {
-    const colocation = await connectMySQLDB.getRepository(ColocationEntity).findOne({ where: { id: colocationId } });
-    const utilisateur = await connectMySQLDB.getRepository(UserEntity).findOne({ where: { id: userId } });
 
-    if (!colocation) {
-      throw new Error("Colocation introuvable");
-    }
-    if (!utilisateur) {
-      throw new Error("Utilisateur introuvable");
+    save(membreColocation: MembreColocationEntity): Promise<MembreColocationEntity> {
+        return this.membreColocationDB.save(membreColocation);
     }
 
-    const membre = new MembreColocationEntity();
-    membre.colocation = colocation;
-    membre.utilisateur = utilisateur;
-
-    return this.membreColocationDB.save(membre);
-  }
-*/
-  // Supprimer un membre d'une colocation (uniquement le propriétaire peut effectuer cette action)
-  async supprimerMembre(colocationId: number, userId: number, proprietaireId: number): Promise<void> {
-    const colocation = await connectMySQLDB.getRepository(ColocationEntity).findOne({
-      where: { id: colocationId },
-      relations: ["proprietaire"],
-    });
-
-    if (!colocation) {
-      throw new Error("Colocation introuvable");
-    }
-    if (colocation.proprietaire.id !== proprietaireId) {
-      throw new Error("Seul le propriétaire peut supprimer des membres de cette colocation");
-    }
-
-    const membre = await this.membreColocationDB.findOne({
-      where: { colocation: { id: colocationId }, utilisateur: { id: userId } },
-    });
-
-    if (!membre) {
-      throw new Error("Membre introuvable dans cette colocation");
-    }
-
-    await this.membreColocationDB.remove(membre);
+    async desactiverMembre(membreColocation: MembreColocationEntity): Promise<MembreColocationEntity> {
+      membreColocation.estActif = false;
+      return this.membreColocationDB.save(membreColocation);
   }
 
-  // Voir le profil d'un membre dans une colocation
-  async voirProfilMembre(colocationId: number, userId: number): Promise<MembreColocationEntity | null> {
+  async findOne(idColocation: number, idMembre: number): Promise<MembreColocationEntity | null> {
     return this.membreColocationDB.findOne({
-      where: { colocation: { id: colocationId }, utilisateur: { id: userId } },
-      relations: ["utilisateur", "colocation"],
+        where: { colocation: { id: idColocation }, utilisateur: { id: idMembre } },
+        relations: ["utilisateur", "colocation"],
     });
   }
-
-  // Lister tous les membres d'une colocation
-  async listerMembres(colocationId: number): Promise<MembreColocationEntity[]> {
-    return this.membreColocationDB.find({
-      where: { colocation: { id: colocationId } },
-      relations: ["utilisateur"],
-    });
-  }
+  
 }

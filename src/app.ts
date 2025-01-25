@@ -4,6 +4,7 @@ import helmet from "helmet";
 import userRoutes from "./routes/user/user.routes";
 import colocationRoutes from "./routes/colocation/colocation.routes";
 import chargeRoutes from "./routes/charges/charges.routes";
+import membreRoutes from "./routes/membre/membre.routes";
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes); // Routes pour les utilisateurs
 
 app.use("/api/colocations", colocationRoutes); // Routes pour les colocations
+
+app.use("/api/membre", membreRoutes); // Routes pour les charges
 
 app.use("/api/charges", chargeRoutes); // Routes pour les charges
 

@@ -88,7 +88,6 @@ export const toggleColocationActiveState = async (req: Request, res: Response): 
         return;
       }
 
-
       const colocationId = parseInt(req.params.colocationId);
       if (isNaN(colocationId)) {
           res.status(400).json({ message: "Invalid colocation ID" });
