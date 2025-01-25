@@ -63,4 +63,20 @@ export class MembreColocationService {
         return this.membreColocationRepository.desactiverMembre(membreColocation);
     }
     
+    async voirProfilMembre(idUserColoc: number, idMembre: number, idColocation: number): Promise<MembreColocationEntity> {
+        // Vérifiez si l'utilisateur est admin ou membre de cette colocation
+        const adminOrMemberColoc = await this.colocationRepository.findAllColocations(idUserColoc);
+        if (!adminOrMemberColoc || !adminOrMemberColoc.some(coloc => coloc.id === idColocation)) {
+            throw new Error("Vous n'avez pas accès au profil de ce membre.");
+        }
+    
+        // Vérifiez si le membre appartient à la colocation
+        const membreColocation = await this.membreColocationRepository.voirProfilMembre(idColocation, idMembre);
+        if (!membreColocation) {
+            throw new Error("Le membre spécifié n'existe pas dans cette colocation.");
+        }
+    
+        return membreColocation;
+    }
+    
 }

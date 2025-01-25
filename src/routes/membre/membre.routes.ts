@@ -6,5 +6,6 @@ const routes = Router();
 
 routes.post("/addMembre", membreController.createMembreColocation);
 routes.post("/deleteMembre", membreController.supprimerMembreColocation);
+routes.post("/viewMembre", membreController.voirProfilMembre);
 
 export default routes;

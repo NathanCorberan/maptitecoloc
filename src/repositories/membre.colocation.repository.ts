@@ -35,6 +35,13 @@ export class MembreColocationRepository {
         where: { colocation: { id: idColocation }, utilisateur: { id: idMembre } },
         relations: ["utilisateur", "colocation"],
     });
-  }
-  
+  }  
+
+  async voirProfilMembre(idColocation: number, idMembre: number): Promise<MembreColocationEntity | null> {
+    return this.membreColocationDB.findOne({
+        where: { colocation: { id: idColocation }, utilisateur: { id: idMembre } },
+        relations: ["utilisateur", "colocation"],
+    });
+}
+
 }
