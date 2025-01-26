@@ -23,6 +23,7 @@ export class ChargesRepository {
 
     return newCharge;
   }
+  
   async save(charge: ChargeEntity): Promise<ChargeEntity> {
     return this.chargeBD.save(charge);
   }

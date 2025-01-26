@@ -54,5 +54,15 @@ export class UserRepository {
       throw new Error("Could not delete user");
     }
   }
+  
+  async findByColocation(colocationId: number): Promise<UserEntity[]> {
+    return this.userDB
+      .createQueryBuilder("user")
+      .innerJoin("user.membresColocation", "membreColocation")
+      .innerJoin("membreColocation.colocation", "colocation")
+      .where("colocation.id = :colocationId", { colocationId })
+      .andWhere("membreColocation.estActif = true")
+      .getMany();
+  }
 }
 
