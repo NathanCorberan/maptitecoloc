@@ -25,4 +25,11 @@ export class ChargePresenter {
   @Type(() => UserPresenter)
   @ValidateNested()
   payePar: UserPresenter;
+
+  @Expose()
+  @ValidateNested()
+  @Type(() => Boolean)
+  estActif: boolean;
+
+
 }

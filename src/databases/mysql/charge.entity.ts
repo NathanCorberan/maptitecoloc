@@ -13,6 +13,9 @@ export class ChargeEntity {
 
   @Column("decimal")
   montant: number;
+  
+  @Column({ type: 'boolean', default: true })
+  IsActif: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   dateCreation: Date;

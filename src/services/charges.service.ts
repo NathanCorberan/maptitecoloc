@@ -35,7 +35,8 @@ export class ChargesService {
             description: chargeToCreate.description,
             montant: chargeToCreate.montant,
             colocation: existingColocation,
-            payePar: existingUser
+            payePar: existingUser,
+            IsActif: chargeToCreate.IsActif
         }
 
         const newCharge = this.chargesRepository.create(chargeInput);
@@ -71,4 +72,67 @@ export class ChargesService {
         }
     }
 
+    async createChargePartiel(chargeToCreate: ChargeToCreateDTO, payeMembre: { idMembre: number, montant: string }[]): Promise<ChargeEntity> {
+        const existingColocation: ColocationEntity | null = await this.colocationsRepository.findOne(chargeToCreate.colocation);
+        if (!existingColocation) {
+            throw new Error("La colocation n'existe pas.");
+        }
+    
+        const existingUser: UserEntity | null = await this.usersRepository.findById(chargeToCreate.payePar);
+        if (!existingUser) {
+            throw new Error("L'utilisateur n'existe pas.");
+        }
+    
+        const chargeInput: ChargeToCreateInput = {
+            description: chargeToCreate.description,
+            montant: chargeToCreate.montant,
+            colocation: existingColocation,
+            payePar: existingUser,
+            IsActif: chargeToCreate.IsActif
+        }
+    
+        const newCharge = this.chargesRepository.create(chargeInput);
+        const savedCharge = await this.chargesRepository.save(newCharge);
+    
+        // Répartition personnalisée des charges
+        await this.repartirChargePartielle(savedCharge, payeMembre);
+    
+        return savedCharge;
+    }
+    
+    async repartirChargePartielle(charge: ChargeEntity, payeMembre: { idMembre: number, montant: string }[]): Promise<void> {
+        // Conversion explicite en nombres flottants
+        const montantTotalCharge = parseFloat(charge.montant.toString()); // Assure-toi que charge.montant est un nombre ou chaîne
+        const totalMontantReparti = payeMembre.reduce((acc, membre) => acc + parseFloat(membre.montant), 0);
+    
+        // Vérification de l'égalité des sommes après conversion
+        if (totalMontantReparti !== montantTotalCharge) {
+            throw new Error("La somme des montants partagés ne correspond pas au montant total de la charge.");
+        }
+    
+        // Répartition des charges entre les membres spécifiés
+        for (const membre of payeMembre) {
+            const colocataire = await this.usersRepository.findById(membre.idMembre);
+            if (!colocataire) {
+                throw new Error(`L'utilisateur avec l'id ${membre.idMembre} n'existe pas.`);
+            }
+    
+            // Création du partage de charge pour chaque membre
+            const partage = new PartageChargeEntity();
+            partage.charge = charge;
+            partage.utilisateur = colocataire;
+            partage.montantDu = parseFloat(membre.montant); // Assure-toi que le montant est un nombre
+            await this.partagesRepository.save(partage);
+    
+            // Si le payeur n'est pas ce membre, créer un paiement pour chaque remboursement
+            if (charge.payePar !== colocataire) {
+                const paiement = new PaiementEntity();
+                paiement.montant = parseFloat(membre.montant);
+                paiement.payePar = charge.payePar;
+                paiement.rembourseA = colocataire;
+                paiement.charge = charge;
+                await this.paiementsRepository.save(paiement);
+            }
+        }
+    }
 }
