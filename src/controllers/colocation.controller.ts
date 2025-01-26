@@ -7,8 +7,10 @@ import { ColocationPresenter } from "../types/colocation/presenters";
 import { ColocationBigPresenter } from "../types/colocation/presenter.big";
 import { verifyAccessToken } from "../utils/jwt";
 import { JwtPayload } from "jsonwebtoken";
+import { HistoriquesService } from "../services/historiques.service";
 
 const colocationService = new ColocationService();
+const historiquesService = new HistoriquesService();
 
 export const createColocation = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -22,6 +24,8 @@ export const createColocation = async (req: Request, res: Response): Promise<voi
         }
 
         const colocation = await colocationService.createColocation(req.body);
+        await historiquesService.createHistorique(colocation.proprietaire.id, "Création de la colocation");
+
         const createdColocation = plainToInstance(ColocationPresenter, colocation, { excludeExtraneousValues: true });
         res.status(201).json(createdColocation);
     }
@@ -101,6 +105,8 @@ export const toggleColocationActiveState = async (req: Request, res: Response): 
       }
 
       const updatedColocation = await colocationService.IsActive(id, colocationId, active);
+      await historiquesService.createHistorique(id, "Colation " + (active ? "activée" : "désactivée"));
+
       if (!updatedColocation) {
           res.status(404).json({ message: "Colocation not found" });
           return;
@@ -139,6 +145,8 @@ export const changeLocataire = async (req: Request, res: Response): Promise<void
     }
 
     const colocationId = parseInt(req.params.colocationId);
+
+    
     if (isNaN(colocationId)) {
       res.status(400).json({ message: "Invalid colocation ID" });
       return;
@@ -150,6 +158,9 @@ export const changeLocataire = async (req: Request, res: Response): Promise<void
     }
 
     const updatedColocation = await colocationService.ChangeLocataire(id, colocationId, newUserId);
+
+    await historiquesService.createHistorique(id, "Changement de locataire pour l'utilisateur " + newUserId);
+
     if (!updatedColocation) {
         res.status(404).json({ message: "Colocation not found or could not update its active state" });
         return;

@@ -10,9 +10,9 @@ export class HistoriquesRepository {
     this.historiqueBD = connectMySQLDB.getRepository(HistoriqueEntity);
   }
 
-  create(historique: HistoriqueToCreateInput, action:string): HistoriqueEntity {
+  create(historique: HistoriqueToCreateInput): HistoriqueEntity {
     const newHistorique = new HistoriqueEntity();
-    newHistorique.action = action;
+    newHistorique.action = historique.action;
     newHistorique.utilisateur = historique.utilisateur;
 
     return newHistorique;

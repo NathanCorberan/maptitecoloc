@@ -10,7 +10,7 @@ export class HistoriqueEntity {
   @Column()
   action: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.historiques)
+  @ManyToOne(() => UserEntity, (user) => user.historiques,{ onDelete: 'CASCADE' })
   utilisateur: UserEntity;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

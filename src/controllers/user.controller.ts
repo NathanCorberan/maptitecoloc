@@ -6,10 +6,11 @@ import { validate } from "class-validator";
 import { UserPresenter } from "../types/user/presenters";
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken, verifyAccessToken, generateAccessTokenId } from "../utils/jwt";
 import { JwtPayload } from "jsonwebtoken";
-
+import { HistoriquesService } from "../services/historiques.service";
 
 
 const userService = new UserService();
+const historiquesService = new HistoriquesService();
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -26,6 +27,9 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
     // Si validation passe, créer l'utilisateur
     const user = await userService.registerUser(req.body);
 
+    // Enregistrer l'historique de l'inscription
+    await historiquesService.createHistorique(user.id, "Inscription");
+
     const createdUser = plainToInstance(UserPresenter, user, { excludeExtraneousValues: true });
     res.status(201).json(createdUser);
   } 
@@ -40,6 +44,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
 
     const { user, accessToken, refreshToken } = await userService.loginUser(email, password);
+    await historiquesService.createHistorique(user.id, "Connection");
 
     res.status(200).json({
       message: "Login successful",
@@ -173,6 +178,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
 
     // Appeler la méthode du service pour supprimer l'utilisateur
     await userService.deleteUserById(id);
+    await historiquesService.createHistorique(id.id, "Delete utilisateur");
 
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error: unknown) {

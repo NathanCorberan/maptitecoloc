@@ -11,14 +11,19 @@ export class HistoriquesService {
   private usersRepository = new UserRepository();
 
 
-  async createHistorique(historiqueToCreate: HistoriqueToCreateDTO, action:string): Promise<HistoriqueEntity> {
+  async createHistorique(idUser:number , action:string): Promise<HistoriqueEntity> {
 
-    const existingUser: UserEntity | null = await this.usersRepository.findById(historiqueToCreate.utilisateur.id);
+    const existingUser: UserEntity | null = await this.usersRepository.findById(idUser);
     if (!existingUser) {
         throw new Error("L'utilisateur n'existe pas.");
     }
 
-    const historique = this.historiqueRepository.create(historiqueToCreate, action);
+    const historiqueToCreateInput: HistoriqueToCreateInput = {
+        utilisateur: existingUser,
+        action: action
+    }
+
+    const historique = this.historiqueRepository.create(historiqueToCreateInput);
     const savedHistorique = await this.historiqueRepository.save(historique);
 
     return savedHistorique;

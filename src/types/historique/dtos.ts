@@ -10,5 +10,5 @@ export class HistoriqueToCreateDTO {
 
   @Expose()
   @IsInt({ message: "L'ID de l'utilisateur doit être un nombre entier." })
-  utilisateur: number | null;
+  utilisateur: UserEntity;
 }

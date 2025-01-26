@@ -6,8 +6,10 @@ import { MembreColocationService } from "../services/membre.service";
 import { plainToInstance } from "class-transformer";
 import { MembreColocationToCreateDTO } from "../types/membre/dtos";
 import { CustomError } from "../utils/customError";
+import { HistoriquesService } from "../services/historiques.service";
 
 const membreColocationService = new MembreColocationService();
+const historiquesService = new HistoriquesService();
 
 export const createMembreColocation = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -61,6 +63,8 @@ export const createMembreColocation = async (req: Request, res: Response): Promi
         id,
         membreColocationToCreateDTO
       );
+      await historiquesService.createHistorique(id, "Ajout d'un membre à la colocation, l'utilisateur " + membreColocationToCreateDTO.utilisateur);
+
   
       // Vérification si la création a échoué
       if (!membreColocation) {
