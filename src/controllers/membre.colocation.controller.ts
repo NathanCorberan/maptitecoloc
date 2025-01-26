@@ -97,34 +97,35 @@ export const createMembreColocation = async (req: Request, res: Response): Promi
 
 export const supprimerMembreColocation = async (req: Request, res: Response): Promise<void> => {
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            res.status(400).json({ message: "Authorization header is required and must be Bearer token" });
-            return;
-        }
-        const accessToken = authHeader.split(" ")[1];
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+          res.status(400).json({ message: "Authorization header is required and must be Bearer token" });
+          return;
+      }
+      const accessToken = authHeader.split(" ")[1];
 
-        // Vérifier et décoder le token
-        const decoded = verifyAccessToken(accessToken);
-        if (!decoded || typeof decoded !== "object") {
-            res.status(401).json({ message: "Invalid or expired access token" });
-            return;
-        }
+      // Vérifier et décoder le token
+      const decoded = verifyAccessToken(accessToken);
+      if (!decoded || typeof decoded !== "object") {
+          res.status(401).json({ message: "Invalid or expired access token" });
+          return;
+      }
 
-        const { id } = decoded as JwtPayload;
-        if (!id) {
-            res.status(400).json({ message: "Invalid token payload, ID is missing" });
-            return;
-        }
+      const { id } = decoded as JwtPayload;
+      if (!id) {
+          res.status(400).json({ message: "Invalid token payload, ID is missing" });
+          return;
+      }
 
-        const { idMembre, idColocation } = req.body;
-        if (!idMembre || !idColocation) {
-            res.status(400).json({ message: "ID du membre et de la colocation sont requis" });
-            return;
-        }
+      const { idMembre, idColocation } = req.body;
+      if (!idMembre || !idColocation) {
+          res.status(400).json({ message: "ID du membre et de la colocation sont requis" });
+          return;
+      }
 
-        const membreColocation = await membreColocationService.supprimerMembreColocation(id, idMembre, idColocation);
-        res.status(200).json({
+      const membreColocation = await membreColocationService.supprimerMembreColocation(id, idMembre, idColocation);
+      await historiquesService.createHistorique(id, "Suppression du membre "+ idMembre +" de la colocation "+ idColocation);
+      res.status(200).json({
             message: `Membre désactivé dans la colocation avec succès`,
             membre: membreColocation,
         });
