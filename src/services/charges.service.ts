@@ -135,4 +135,12 @@ export class ChargesService {
             }
         }
     }
+    async deactivateCharge(id: number): Promise<ChargeEntity> {
+        return this.chargesRepository.deactivateCharge(id);
+      }
+
+    async activateCharge(id: number): Promise<ChargeEntity> {
+        return this.chargesRepository.activateCharge(id);
+    }
+    
 }

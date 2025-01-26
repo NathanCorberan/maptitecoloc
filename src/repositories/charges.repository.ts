@@ -23,10 +23,33 @@ export class ChargesRepository {
 
     return newCharge;
   }
+
+  async findById(id: number): Promise<ChargeEntity | null> {
+      return this.chargeBD.findOne({
+        where: { id }, 
+      });
+    }
   
   async save(charge: ChargeEntity): Promise<ChargeEntity> {
     return this.chargeBD.save(charge);
   }
+  async deactivateCharge(id: number): Promise<ChargeEntity> {
+    const charge = await this.findById(id);
+    if (!charge) {
+      throw new Error("Charge not found");
+    }
+
+    charge.IsActif = false;  // Mettre IsActif à false
+    return this.chargeBD.save(charge);  // Sauvegarder la charge mise à jour
+  }
+
+  async activateCharge(id: number): Promise<ChargeEntity> {
+    const charge = await this.findById(id);
+    if (!charge) {
+      throw new Error("Charge not found");
+    }
+
+    charge.IsActif = true;  // Mettre IsActif à false
+    return this.chargeBD.save(charge);  // Sauvegarder la charge mise à jour
+  }
 }
-
-

@@ -6,5 +6,7 @@ const routes = Router();
 
 routes.post("/createCharges", chargesController.createCharge);
 routes.post("/createChargesPartiel", chargesController.createChargePartiel);
+routes.put("/:id/desactivate", chargesController.deactivateCharge);
+routes.put("/:id/activate", chargesController.activateCharge);
 
 export default routes;

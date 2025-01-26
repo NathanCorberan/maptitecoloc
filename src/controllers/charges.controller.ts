@@ -51,5 +51,30 @@ export async function createChargePartiel(req: Request, res: Response) {
     }
 }
 
+export async function deactivateCharge(req: Request, res: Response) {
+    try {
+        const { id } = req.params;  // Récupérer l'ID de la charge depuis les paramètres de la requête
+        const charge = await chargesService.deactivateCharge(Number(id));  // Appeler le service pour désactiver
+
+        const createdCharge = plainToInstance(ChargePresenter, charge, { excludeExtraneousValues: true });
+        res.status(200).json(createdCharge);  // Répondre avec la charge mise à jour
+    } catch (error: unknown) {
+        const err = error as Error;
+        res.status(500).json({ message: "Internal Server Error", error: err.message });
+    }
+}
+export async function activateCharge(req: Request, res: Response) {
+    try {
+        const { id } = req.params;  // Récupérer l'ID de la charge depuis les paramètres de la requête
+        const charge = await chargesService.activateCharge(Number(id));  // Appeler le service pour désactiver
+
+        const createdCharge = plainToInstance(ChargePresenter, charge, { excludeExtraneousValues: true });
+        res.status(200).json(createdCharge);  // Répondre avec la charge mise à jour
+    } catch (error: unknown) {
+        const err = error as Error;
+        res.status(500).json({ message: "Internal Server Error", error: err.message });
+    }
+}
+  
 
 
