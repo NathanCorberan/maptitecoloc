@@ -7,358 +7,682 @@
 	},
 	"item": [
 		{
-			"name": "Register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"firstname\": \"Nathan\",\r\n    \"lastname\": \"Corberan\",\r\n    \"email\": \"nathan.corberan@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"age\": 21\r\n}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "user",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Test\",\r\n    \"lastname\": \"Histo\",\r\n    \"email\": \"Test.Histo@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"age\": 21\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"register"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"disabled": true
+								}
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/api/users/register",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"register"
-					],
-					"query": [
-						{
-							"key": "Content-Type",
-							"value": "application/json",
-							"disabled": true
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"Toto.tata@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJuYXRoYW4uY29yYmVyYW5AZ21haWwuY29tIiwiaWF0IjoxNzM3Mzg0NjMzLCJleHAiOjE3Mzc5ODk0MzN9.snrgNte9EOyAtPhfoLkm5sNlvogiYh2yBuU6ecUWTTk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hdGhhbi5jb3JiZXJhbkBnbWFpbC5jb20iLCJpYXQiOjE3MzczODY1MDAsImV4cCI6MTczNzM4NjU2MH0.p08RiKG6eaHE9QgBFc5Qxt8P5XYhQjtvt-okTHMG_WA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJUZXN0Lkhpc3RvQGdtYWlsLmNvbSIsImlhdCI6MTczNzg5NjU4MSwiZXhwIjoxNzM3ODk3MTgxfQ.wIjzOUq9Log8uEcXmsswrnQwNv59qQYt0c4wqnEjp3A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"delete"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"nathan.corberan@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "colocations",
+			"item": [
+				{
+					"name": "CreateColocation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lieu\": \"Paris 10ème\",\r\n    \"surface\": 85,\r\n    \"nombreChambres\": 4,\r\n    \"agenceOuProprietaire\": \"Agence Immobilière XYZ\",\r\n    \"estActive\": true,\r\n    \"proprietaire\": 2\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/colocations/createColocation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"colocations",
+								"createColocation"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/api/users/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"login"
-					]
+				{
+					"name": "GetAllColocationUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/colocations/getUser/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"colocations",
+								"getUser",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllInfoColocation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/colocations/getInfoColoc/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"colocations",
+								"getInfoColoc",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateState",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJUb3RvLnRhdGFAZ21haWwuY29tIiwiaWF0IjoxNzM3ODk3MDQ2LCJleHAiOjE3Mzc4OTc2NDZ9.iM4ECLHTrXO69wJvVyW5XmBCcYdhNiktp7DurcaLwBs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/colocations/colocationState/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"colocations",
+								"colocationState",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TransfereLocataire",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJUb3RvLnRhdGFAZ21haWwuY29tIiwiaWF0IjoxNzM3ODk3MDQ2LCJleHAiOjE3Mzc4OTc2NDZ9.iM4ECLHTrXO69wJvVyW5XmBCcYdhNiktp7DurcaLwBs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newUserId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/colocations/changedLocataire/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"colocations",
+								"changedLocataire",
+								"12"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Refresh",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJuYXRoYW4uY29yYmVyYW5AZ21haWwuY29tIiwiaWF0IjoxNzM3Mzg0NjMzLCJleHAiOjE3Mzc5ODk0MzN9.snrgNte9EOyAtPhfoLkm5sNlvogiYh2yBuU6ecUWTTk",
-							"type": "string"
+			"name": "charges",
+			"item": [
+				{
+					"name": "CreateCharge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Loyer\",\r\n  \"montant\": \"600.00\",\r\n  \"colocation\": 5,\r\n  \"payePar\": 2,\r\n  \"IsActif\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/charges/createCharges",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"charges",
+								"createCharges"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "CreateChargePartiel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Loyer\",\r\n  \"montant\": \"600.00\",\r\n  \"colocation\": 5,\r\n  \"payePar\": 2,\r\n  \"IsActif\": true,\r\n  \"PayeMembre\": [\r\n    {\r\n      \"idMembre\": 2,\r\n      \"montant\": \"500.00\"\r\n    },\r\n    {\r\n      \"idMembre\": 3,\r\n      \"montant\": \"100.00\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/charges/createChargesPartiel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"charges",
+								"createChargesPartiel"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/api/users/refresh",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"refresh"
-					]
+				{
+					"name": "descativate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/charges/:id/desactivate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"charges",
+								":id",
+								"desactivate"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/charges/:id/activate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"charges",
+								":id",
+								"activate"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Me",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hdGhhbi5jb3JiZXJhbkBnbWFpbC5jb20iLCJpYXQiOjE3MzczODY1MDAsImV4cCI6MTczNzM4NjU2MH0.p08RiKG6eaHE9QgBFc5Qxt8P5XYhQjtvt-okTHMG_WA",
-							"type": "string"
+			"name": "membre",
+			"item": [
+				{
+					"name": "AddMembre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJUb3RvLnRhdGFAZ21haWwuY29tIiwiaWF0IjoxNzM3ODk3MDQ2LCJleHAiOjE3Mzc4OTc2NDZ9.iM4ECLHTrXO69wJvVyW5XmBCcYdhNiktp7DurcaLwBs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"utilisateur\": 3,\r\n    \"colocation\": 11,\r\n    \"estActif\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/membre/addMembre",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"membre",
+								"addMembre"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/users/me",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"me"
-					]
+				{
+					"name": "DeleteMembre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJUb3RvLnRhdGFAZ21haWwuY29tIiwiaWF0IjoxNzM3ODM1NjMyLCJleHAiOjE3Mzc4MzYyMzJ9.uGi69g9zceYJT8hd6OjTBHH-tXVz7fxiU_G9c234KcQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"utilisateur\": 2,\r\n    \"colocation\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/membre/deleteMembre",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"membre",
+								"deleteMembre"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ViewProfileMember",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJUb3RvLnRhdGFAZ21haWwuY29tIiwiaWF0IjoxNzM3ODQ3OTgwLCJleHAiOjE3Mzc4NDg1ODB9.RscriHVtQ8MPnZPgC6MGuVDnkwwgPML3lLEkF349LWk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idMembre\": 3,\r\n    \"idColocation\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/membre/viewMembre",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"membre",
+								"viewMembre"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Delete",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJuYXRoYW4uY29yYmVyYW5AZ21haWwuY29tIiwiaWF0IjoxNzM3Mzk3NDI0LCJleHAiOjE3MzczOTgwMjR9.eo9EF98DJtjL-KbYyilWhh3qfjA2W3mNfMjYMEGEqZY",
-							"type": "string"
+			"name": "TacheMenager",
+			"item": [
+				{
+					"name": "addTaches",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJUb3RvLnRhdGFAZ21haWwuY29tIiwiaWF0IjoxNzM3ODkyODUwLCJleHAiOjE3Mzc4OTM0NTB9.bYpVcb3_XeHEaATXV1MNHDoivpS10pgHHGi1UKwd418",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Nettoyer la cuisine\",\r\n  \"statut\": \"En cours\",\r\n  \"dateLimite\": \"2025-01-21T13:23:29\",\r\n  \"assignee\": 3,\r\n  \"colocation\": 5\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/tacheMenager/addTacheMenager",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tacheMenager",
+								"addTacheMenager"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/users/delete",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"delete"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateColocation",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"lieu\": \"Paris 10ème\",\r\n    \"surface\": 85,\r\n    \"nombreChambres\": 4,\r\n    \"agenceOuProprietaire\": \"Agence Immobilière XYZ\",\r\n    \"estActive\": true,\r\n    \"proprietaire\": 2\r\n}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "UpdateStatut",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"statut\": \"Terminé\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/tacheMenager/:id/statut",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tacheMenager",
+								":id",
+								"statut"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/colocations/createColocation",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"colocations",
-						"createColocation"
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAllColocationUser",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/colocations/getUser/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"colocations",
-						"getUser",
-						"2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAllInfoColocation",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/colocations/getInfoColoc/5",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"colocations",
-						"getInfoColoc",
-						"5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "UpdateState",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"active\": true\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/colocations/colocationState/5",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"colocations",
-						"colocationState",
-						"5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ChangedLocataire",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ4ZGZnamhjQGdtYWlsLmNvbSIsImlhdCI6MTczNzQ3MjkwMCwiZXhwIjoxNzM3NDczNTAwfQ._iNKxzhCsapEMcc2HGi7XEActrukahvPEyMKnseCEko",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"newUserId\": 2\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/colocations/changedLocataire/5",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"colocations",
-						"changedLocataire",
-						"5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateCharge",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"description\": \"Electricité\",\r\n  \"montant\": 120.50,\r\n  \"colocationId\": 1,\r\n  \"payeParId\": 1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/charges/createCharges",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"charges",
-						"createCharges"
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	]
 }
