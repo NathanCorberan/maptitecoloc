@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { IsString, IsEnum, IsInt, IsOptional, IsDate } from "class-validator";
 import { UserEntity } from "../../databases/mysql/user.entity";
 import { ColocationEntity } from "../../databases/mysql/colocation.entity";
@@ -14,6 +14,7 @@ export class TacheMenagereToCreateDTO {
 
   @Expose()
   @IsOptional()
+  @Type(() => Date) // Transformation implicite en `Date`
   @IsDate({ message: "La date limite doit être une date valide." })
   dateLimite: Date;
 

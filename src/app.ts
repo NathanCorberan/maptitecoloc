@@ -5,6 +5,7 @@ import userRoutes from "./routes/user/user.routes";
 import colocationRoutes from "./routes/colocation/colocation.routes";
 import chargeRoutes from "./routes/charges/charges.routes";
 import membreRoutes from "./routes/membre/membre.routes";
+import tacheMenagerRoutes from "./routes/tacheMenager/tache.menager.routes";
 import errorHandler from "./middleware/errorHandler";
 
 const app = express();
@@ -27,6 +28,8 @@ app.use("/api/colocations", colocationRoutes); // Routes pour les colocations
 app.use("/api/membre", membreRoutes); // Routes pour les charges
 
 app.use("/api/charges", chargeRoutes); // Routes pour les charges
+
+app.use("/api/tacheMenager", tacheMenagerRoutes); // Routes pour les charges
 
 // Middleware de gestion des erreurs (à vous de le personnaliser pour qu'il soit réutilisable, pensez aux classes d'erreurs)
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
