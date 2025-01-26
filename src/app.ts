@@ -5,8 +5,10 @@ import userRoutes from "./routes/user/user.routes";
 import colocationRoutes from "./routes/colocation/colocation.routes";
 import chargeRoutes from "./routes/charges/charges.routes";
 import membreRoutes from "./routes/membre/membre.routes";
+import errorHandler from "./middleware/errorHandler";
 
 const app = express();
+app.use(errorHandler);
 
 // Middlewares globaux
 app.use(express.json()); // Permet de lire le body en JSON

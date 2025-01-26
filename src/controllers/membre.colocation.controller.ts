@@ -5,55 +5,91 @@ import { JwtPayload } from "jsonwebtoken";
 import { MembreColocationService } from "../services/membre.service";
 import { plainToInstance } from "class-transformer";
 import { MembreColocationToCreateDTO } from "../types/membre/dtos";
+import { CustomError } from "../utils/customError";
 
 const membreColocationService = new MembreColocationService();
 
 export const createMembreColocation = async (req: Request, res: Response): Promise<void> => {
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            res.status(400).json({ message: "Authorization header is required and must be Bearer token" });
-            return;
-        }
-        const accessToken = authHeader.split(" ")[1];
-
-        // Vérifier et décoder le token
-        const decoded = verifyAccessToken(accessToken);
-        if (!decoded || typeof decoded !== "object") {
-            res.status(401).json({ message: "Invalid or expired access token" });
-            return;
-        }
-
-        // Extraire l'ID de l'utilisateur qui a créer la colocation depuis le token
-        const { id } = decoded as JwtPayload;
-        if (!id) {
-            res.status(400).json({ message: "Invalid token payload, ID is missing" });
-            return;
-        }
-
-        const membreColocationToCreateDTO = plainToInstance(MembreColocationToCreateDTO, req.body, { excludeExtraneousValues: true });
-
-        const dtoErrors = await validate(membreColocationToCreateDTO);
-        if (dtoErrors.length > 0) {
-            const errorMessages = dtoErrors.map((error) => error.constraints);
-            res.status(400).json({ errors: errorMessages });
-            return;
-        }
-
-        const membreColocation = await membreColocationService.createMembreColocation(id, membreColocationToCreateDTO);
-        if (!membreColocation) {
-            res.status(404).json({ message: "Colocation not found" });
-            return;
-        }
-        res.status(200).json({
-            message: `Membre ajouté à la colocation avec succès`,
+      // Vérification de l'en-tête d'autorisation
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        res.status(400).json({
+          message: "Authorization header is required and must be a Bearer token",
         });
-    }
-    catch (error: unknown) {
+        return;
+      }
+      const accessToken = authHeader.split(" ")[1];
+  
+      // Vérification et décodage du token
+      const decoded = verifyAccessToken(accessToken);
+      if (!decoded || typeof decoded !== "object") {
+        res.status(401).json({
+          message: "Invalid or expired access token",
+        });
+        return;
+      }
+  
+      // Extraction de l'ID utilisateur à partir du token
+      const { id } = decoded as JwtPayload;
+      if (!id) {
+        res.status(400).json({
+          message: "Invalid token payload, ID is missing",
+        });
+        return;
+      }
+  
+      // Transformation et validation des données reçues
+      const membreColocationToCreateDTO = plainToInstance(
+        MembreColocationToCreateDTO,
+        req.body,
+        { excludeExtraneousValues: true }
+      );
+  
+      const dtoErrors = await validate(membreColocationToCreateDTO);
+      if (dtoErrors.length > 0) {
+        const errorMessages = dtoErrors.map((error) => error.constraints);
+        res.status(400).json({
+          message: "Validation errors",
+          errors: errorMessages,
+        });
+        return;
+      }
+  
+      // Création du membre de la colocation
+      const membreColocation = await membreColocationService.createMembreColocation(
+        id,
+        membreColocationToCreateDTO
+      );
+  
+      // Vérification si la création a échoué
+      if (!membreColocation) {
+        res.status(404).json({
+          message: "Colocation not found",
+        });
+        return;
+      }
+  
+      res.status(200).json({
+        message: "Membre ajouté à la colocation avec succès",
+      });
+    } catch (error: unknown) {
+      if (error instanceof CustomError) {
+        // Utilisation du code personnalisé dans la réponse
+        const statusCode = parseInt(error.statusCode, 10) || 500; // Assure que le statusCode est un entier
+        res.status(statusCode).json({
+          message: error.message,
+          errorCode: error.errorCode,
+        });
+      } else {
         const err = error as Error;
-        res.status(500).json({ message: "Internal Server Error", error: err.message });
+        res.status(500).json({
+          message: "Internal Server Error",
+          error: err.message,
+        });
+      }
     }
-}
+  };
 
 export const supprimerMembreColocation = async (req: Request, res: Response): Promise<void> => {
     try {

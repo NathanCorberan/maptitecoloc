@@ -5,6 +5,7 @@ import { MembreColocationRepository } from "../repositories/membre.colocation.re
 import { UserRepository } from "../repositories/user.repository";
 import { MembreColocationToCreateDTO } from "../types/membre/dtos";
 import { MembreColocationToCreateInput } from "../types/membre/Inputs";
+import { CustomError } from "../utils/customError";
 
 export class MembreColocationService {
     private membreColocationRepository = new MembreColocationRepository();
@@ -12,32 +13,30 @@ export class MembreColocationService {
     private colocationRepository = new ColocationRepository();
 
     async createMembreColocation(idUserColoc: number, membreColocationToCreate: MembreColocationToCreateDTO): Promise<MembreColocationEntity> {
-        const AdminUserColoc = await this.colocationRepository.findAllColocations(idUserColoc);
-        if (!AdminUserColoc) {
-            throw new Error("Aucune colocation trouvée pour cet utilisateur.");
+        const adminUserColoc = await this.colocationRepository.findAllColocations(idUserColoc);
+        if (!adminUserColoc) {
+          throw new CustomError("No colocation found for this user", "A0001", "COLOCATION_NOT_FOUND");
         }
-        
-        const existingUser: UserEntity | null = await this.userRepository.findById(membreColocationToCreate.utilisateur);
+    
+        const existingUser = await this.userRepository.findById(membreColocationToCreate.utilisateur);
         if (!existingUser) {
-            throw new Error("L'utilisateur voulant être ajouté n'existe pas.");
+          throw new CustomError("The user to be added does not exist", "404", "USER_NOT_FOUND");
         }
-
+    
         const existingColocation = await this.colocationRepository.findOne(membreColocationToCreate.colocation);
         if (!existingColocation) {
-            throw new Error("La colocation spécifiée n'existe pas.");
+          throw new CustomError("The specified colocation does not exist", "404", "COLOCATION_NOT_FOUND");
         }
-
+    
         const membreColocationInput: MembreColocationToCreateInput = {
-            utilisateur: existingUser,
-            colocation: existingColocation,
-            estActif: membreColocationToCreate.estActif,
+          utilisateur: existingUser,
+          colocation: existingColocation,
+          estActif: membreColocationToCreate.estActif,
         };
-
+    
         const newMembreColocation = this.membreColocationRepository.ajouterMembre(membreColocationInput);
-        const savedMembreColocation = await this.membreColocationRepository.save(newMembreColocation);
-
-        return savedMembreColocation;
-    }  
+        return this.membreColocationRepository.save(newMembreColocation);
+    }
 
     async supprimerMembreColocation(idUserColoc: number, idMembre: number, idColocation: number): Promise<MembreColocationEntity> {
         // Vérifier si l'utilisateur est l'admin de la colocation
